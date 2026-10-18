@@ -1,12 +1,13 @@
-import { Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+import CategoriesHeader from "../../components/categories/CategoriesHeader";
+import CategoriesAllocation from "../../components/categories/CategoriesAllocation";
 
 export default function CategoriesScreen() {
   return (
-    <SafeAreaView className="flex-1 bg-slate-50 p-4">
-      <Text className="text-2xl font-bold text-slate-800">
-        Categories Screen
-      </Text>
+    <SafeAreaView className="flex-1 bg-[#faf8ff] p-4">
+      <CategoriesHeader />
+      <CategoriesAllocation />
     </SafeAreaView>
   );
 }
