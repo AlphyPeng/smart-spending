@@ -6,5 +6,11 @@ module.exports = defineConfig([
   expoConfig,
   {
     ignores: ["dist/*"],
-  }
+  },
+  {
+    files: ["src/components/budget/BudgetDeck.tsx"],
+    rules: {
+      "react-hooks/immutability": "off",
+    },
+  },
 ]);

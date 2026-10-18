@@ -49,7 +49,7 @@ export default function WelcomeScreen() {
           </View>
 
           <Text className="text-3xl font-extrabold text-white text-center mb-1">
-            Allocwenta
+            Sisidlan
           </Text>
           <Text className="text-sm font-semibold text-blue-100 text-center mb-5">
             Smart Spending • Budget Tracker

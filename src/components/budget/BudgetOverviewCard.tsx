@@ -1,31 +1,57 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Text, TouchableOpacity, View } from "react-native";
+import type { Budget } from "../../context/BudgetContext";
+import { formatNumber, formatPeso } from "../../lib/currency";
 
-export default function BudgetOverviewCard() {
+interface BudgetOverviewCardProps {
+  budget: Budget;
+  onEdit: () => void;
+}
+
+export default function BudgetOverviewCard({
+  budget,
+  onEdit,
+}: BudgetOverviewCardProps) {
+  const total = budget.amount;
+  const spent = 0;
+  const inCart = 0;
+  const planned = 0;
+  const free = Math.max(total - spent - inCart, 0);
+  const unreserved = Math.max(total - planned, 0);
+  const availablePct =
+    total > 0 ? Math.round(((total - spent - inCart) / total) * 100) : 0;
+  const spentPct = total > 0 ? (spent / total) * 100 : 0;
+  const inCartPct = total > 0 ? (inCart / total) * 100 : 0;
+
   return (
-    <View className="w-full rounded-3xl overflow-hidden shadow-lg border border-blue-100 bg-white">
+    <View className="w-full rounded-3xl overflow-hidden border border-blue-100 bg-white">
       <LinearGradient
         colors={["#FFFFFF", "#F0F6FF"]}
         start={{ x: 0.5, y: 0 }}
         end={{ x: 0.5, y: 1 }}
         style={{ padding: 16, width: "100%" }}
       >
-        {/* Title abnd Edit */}
+        {/* Title and Edit */}
         <View className="flex-row justify-between items-center mb-4">
-          <View className="flex-row items-center">
+          <View className="flex-row items-center flex-1 mr-2">
             <View className="w-6 h-6 bg-blue-600 rounded-md items-center justify-center mr-2">
               <Ionicons name="wallet-outline" size={14} color="#FFFFFF" />
             </View>
             <Text
               style={{ color: "#334155" }}
-              className="text-sm font-black tracking-wider"
+              className="text-sm font-black tracking-wider flex-1"
+              numberOfLines={1}
             >
-              MONTHLY GROCERY BUDGET
+              {budget.name.toUpperCase()}
             </Text>
           </View>
 
-          <TouchableOpacity className="flex-row items-center">
+          <TouchableOpacity
+            className="flex-row items-center"
+            hitSlop={8}
+            onPress={onEdit}
+          >
             <Ionicons name="pencil-outline" size={14} color="#334155" />
             <Text
               style={{ color: "#334155" }}
@@ -45,7 +71,7 @@ export default function BudgetOverviewCard() {
             ₱
           </Text>
           <Text className="text-4xl font-extrabold text-slate-900 tracking-tight">
-            6,450.00
+            {formatNumber(unreserved)}
           </Text>
         </View>
 
@@ -54,7 +80,9 @@ export default function BudgetOverviewCard() {
           <Text className="text-sm text-slate-500 font-medium mr-1">
             Remaining of
           </Text>
-          <Text className="text-sm font-bold text-slate-800">₱ 15,000</Text>
+          <Text className="text-sm font-bold text-slate-800">
+            {formatPeso(total)}
+          </Text>
         </View>
 
         {/* Percentage Available */}
@@ -71,42 +99,42 @@ export default function BudgetOverviewCard() {
             className="text-xs font-bold whitespace-nowrap"
             numberOfLines={1}
           >
-            43% Available • On Track
+            {availablePct}% Available • {availablePct >= 50 ? "On Track" : "Bantayan"}
           </Text>
         </View>
 
         {/* Progress Bar */}
         <View className="h-2.5 w-full bg-slate-200/80 rounded-full flex-row overflow-hidden mb-2">
           <View
-            style={{ backgroundColor: "#2563EB" }}
-            className="h-full  w-[40%]"
+            style={{ backgroundColor: "#2563EB", width: `${spentPct}%` }}
+            className="h-full"
           />
           <View
-            style={{ backgroundColor: "#38BDF8" }}
-            className="h-full  w-[20%]"
+            style={{ backgroundColor: "#38BDF8", width: `${inCartPct}%` }}
+            className="h-full"
           />
         </View>
 
-        {/* Planned, Spent, Unreserved */}
+        {/* Spent, In Cart, Free */}
         <View className="flex-row justify-between items-center mb-6 px-1">
           <View className="flex-row items-center">
             <View className="w-2.5 h-2.5 rounded-full bg-blue-600 mr-1" />
             <Text className="text-[11px] font-semibold text-slate-600">
-              Spent (₱5,350)
+              Spent ({formatPeso(spent)})
             </Text>
           </View>
 
           <View className="flex-row items-center">
             <View className="w-2.5 h-2.5 rounded-full bg-sky-400 mr-1" />
             <Text className="text-[11px] font-semibold text-slate-600">
-              In Cart (₱2,180)
+              In Cart ({formatPeso(inCart)})
             </Text>
           </View>
 
           <View className="flex-row items-center">
             <View className="w-2.5 h-2.5 rounded-full bg-slate-300 mr-1" />
             <Text className="text-[11px] font-semibold text-slate-600">
-              Free (₱6,450)
+              Free ({formatPeso(free)})
             </Text>
           </View>
         </View>
@@ -119,7 +147,7 @@ export default function BudgetOverviewCard() {
                 Planned
               </Text>
               <Text className="text-sm font-extrabold text-slate-900">
-                ₱8,550
+                {formatPeso(planned)}
               </Text>
               <Text className="text-[10px] text-slate-400 font-medium mt-0.5">
                 Allocated
@@ -131,7 +159,7 @@ export default function BudgetOverviewCard() {
                 Spent
               </Text>
               <Text className="text-sm font-extrabold text-blue-700">
-                ₱5,350
+                {formatPeso(spent)}
               </Text>
               <Text className="text-[10px] text-blue-500 font-semibold mt-0.5">
                 Recorded
@@ -143,7 +171,7 @@ export default function BudgetOverviewCard() {
                 Unreserved
               </Text>
               <Text className="text-sm font-extrabold text-slate-900">
-                ₱6,450
+                {formatPeso(unreserved)}
               </Text>
               <Text className="text-[10px] text-blue-600 font-semibold mt-0.5">
                 Safe

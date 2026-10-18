@@ -1,7 +1,7 @@
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import BudgetDeck from "../../components/budget/BudgetDeck";
 import BudgetHeader from "../../components/budget/BudgetHeader";
-import BudgetOverviewCard from "../../components/budget/BudgetOverviewCard";
 import GreetingBanner from "../../components/budget/GreetingBanner";
 
 export default function BudgetScreen() {
@@ -13,12 +13,14 @@ export default function BudgetScreen() {
       <ScrollView
         contentContainerStyle={{ padding: 16 }}
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        automaticallyAdjustKeyboardInsets
       >
         {/* Greeting Banner Section */}
         <GreetingBanner />
 
-        {/* Budget Overview Section */}
-        <BudgetOverviewCard />
+        {/* Budget Deck Section */}
+        <BudgetDeck />
       </ScrollView>
     </SafeAreaView>
   );
