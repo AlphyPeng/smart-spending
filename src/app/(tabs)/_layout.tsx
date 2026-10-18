@@ -1,7 +1,7 @@
 
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View, type PressableProps } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabsLayout() {
@@ -18,7 +18,7 @@ export default function TabsLayout() {
         // Remove Android dark ripple effect
         tabBarButton: (props) => (
           <Pressable
-            {...props}
+            {...(props as PressableProps)}
             android_ripple={{ color: "transparent" }}
           />
         ),

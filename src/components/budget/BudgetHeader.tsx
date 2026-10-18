@@ -1,7 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Text, TouchableOpacity, View } from "react-native";
+import { useUser } from "../../context/UserContext";
+import { getInitials } from "../../lib/name";
 
 export default function BudgetHeader() {
+  const { user } = useUser();
+  const initials = getInitials(user?.name ?? "");
+
   return (
     <View>
       <View className="flex-row justify-between items-center mb-3 px-4 pt-5">
@@ -39,7 +44,7 @@ export default function BudgetHeader() {
           </TouchableOpacity>
 
           <View className="w-10 h-10 bg-blue-600 rounded-full items-center justify-center shadow-md">
-            <Text className="text-white font-bold text-xs">JD</Text>
+            <Text className="text-white font-bold text-xs">{initials}</Text>
           </View>
         </View>
       </View>

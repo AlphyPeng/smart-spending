@@ -1,10 +1,40 @@
 import { Stack } from "expo-router";
+import { SQLiteProvider } from "expo-sqlite";
+import { ActivityIndicator, View } from "react-native";
 import "../global.css";
+import { UserProvider, useUser } from "../context/UserContext";
+import { DATABASE_NAME, migrateDbIfNeeded } from "../db/database";
+
+function RootNavigator() {
+  const { isLoading, isOnboarded } = useUser();
+
+  if (isLoading) {
+    return (
+      <View className="flex-1 bg-slate-50 items-center justify-center">
+        <ActivityIndicator size="large" color="#2563EB" />
+      </View>
+    );
+  }
+
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Protected guard={!isOnboarded}>
+        <Stack.Screen name="onboarding" />
+      </Stack.Protected>
+
+      <Stack.Protected guard={isOnboarded}>
+        <Stack.Screen name="(tabs)" />
+      </Stack.Protected>
+    </Stack>
+  );
+}
 
 export default function RootLayout() {
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" />
-    </Stack>
+    <SQLiteProvider databaseName={DATABASE_NAME} onInit={migrateDbIfNeeded}>
+      <UserProvider>
+        <RootNavigator />
+      </UserProvider>
+    </SQLiteProvider>
   );
 }

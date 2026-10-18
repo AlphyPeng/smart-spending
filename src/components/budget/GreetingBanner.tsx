@@ -1,12 +1,17 @@
 import { Text, View } from "react-native";
+import { useUser } from "../../context/UserContext";
+import { getFirstName } from "../../lib/name";
 
 export default function GreetingBanner() {
+  const { user } = useUser();
+  const firstName = getFirstName(user?.name ?? "Kaibigan");
+
   return (
     <View className="flex-row justify-between items-start mb-2">
       <View className="flex-1 mr-2">
         <View className="flex-row items-center">
           <Text className="text-2xl font-extrabold text-slate-900 mr-1.5">
-            Kamusta, Juan!
+            Kamusta, {firstName}!
           </Text>
           <Text className="text-xl">👋</Text>
         </View>
