@@ -10,6 +10,7 @@ import Animated, {
   type SharedValue,
 } from "react-native-reanimated";
 import { useBudgets, type Budget } from "../../context/BudgetContext";
+import { useTheme } from "../../context/ThemeContext";
 import AddBudgetCard from "./AddBudgetCard";
 import BudgetEmptyState from "./BudgetEmptyState";
 import BudgetOverviewCard from "./BudgetOverviewCard";
@@ -242,6 +243,7 @@ function DeckCard({
 
 export default function BudgetDeck() {
   const { budgets, isLoading } = useBudgets();
+  const { colors } = useTheme();
   const [activeIndex, setActiveIndex] = useState(0);
   const [cardHeight, setCardHeight] = useState<number | null>(null);
   const [formState, setFormState] = useState<FormState>(null);
@@ -330,7 +332,7 @@ export default function BudgetDeck() {
   if (isLoading) {
     return (
       <View className="items-center justify-center py-16">
-        <ActivityIndicator size="large" color="#2563EB" />
+        <ActivityIndicator size="large" color={colors.accent} />
       </View>
     );
   }
@@ -454,14 +456,14 @@ export default function BudgetDeck() {
             key={item.key}
             className={
               index === activeIndex
-                ? "w-6 h-2 rounded-full bg-blue-600 mx-1"
-                : "w-2 h-2 rounded-full bg-slate-300 mx-1"
+                ? "w-6 h-2 rounded-full bg-primary-accent mx-1"
+                : "w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-600 mx-1"
             }
           />
         ))}
       </View>
 
-      <Text className="text-[11px] text-slate-400 font-medium text-center mt-2.5">
+      <Text className="text-[11px] text-slate-400 dark:text-slate-500 font-medium text-center mt-2.5">
         I-swipe pakaliwa para sa susunod, pakanan para sa nauna
       </Text>
     </View>

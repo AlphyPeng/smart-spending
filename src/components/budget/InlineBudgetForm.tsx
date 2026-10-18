@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import { useBudgets, type Budget } from "../../context/BudgetContext";
+import { useTheme } from "../../context/ThemeContext";
 
 interface InlineBudgetFormProps {
   mode: "create" | "edit";
@@ -23,6 +24,7 @@ export default function InlineBudgetForm({
   onSaved,
 }: InlineBudgetFormProps) {
   const { addBudget, updateBudget } = useBudgets();
+  const { colors } = useTheme();
   const isEditing = mode === "edit" && initialBudget !== undefined;
 
   const [name, setName] = useState(initialBudget?.name ?? "");
@@ -74,16 +76,20 @@ export default function InlineBudgetForm({
   }
 
   return (
-    <View className="grow rounded-3xl bg-white border border-slate-100 p-5 justify-center">
+    <View className="grow rounded-3xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-5 justify-center">
       <View className="flex-row items-center mb-4">
-        <View className="w-9 h-9 bg-blue-600 rounded-2xl items-center justify-center mr-2.5">
-          <Ionicons name={isEditing ? "pencil" : "add"} size={18} color="#FFFFFF" />
+        <View className="w-9 h-9 bg-primary rounded-2xl items-center justify-center mr-2.5">
+          <Ionicons
+            name={isEditing ? "pencil" : "add"}
+            size={18}
+            color={colors.onFill}
+          />
         </View>
         <View className="flex-1 mr-2">
-          <Text className="text-sm font-extrabold text-slate-900">
+          <Text className="text-sm font-extrabold text-slate-900 dark:text-slate-50">
             {isEditing ? "I-edit ang Budget" : "Bagong Budget"}
           </Text>
-          <Text className="text-[11px] text-slate-400 font-medium">
+          <Text className="text-[11px] text-slate-400 dark:text-slate-500 font-medium">
             {isEditing
               ? "Baguhin ang pangalan o total na halaga."
               : "Pangalanan at lagyan ng total na halaga."}
@@ -92,13 +98,13 @@ export default function InlineBudgetForm({
         <TouchableOpacity
           onPress={onCancel}
           hitSlop={8}
-          className="w-8 h-8 bg-slate-100 rounded-full items-center justify-center"
+          className="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-full items-center justify-center"
         >
-          <Ionicons name="close" size={16} color="#64748B" />
+          <Ionicons name="close" size={16} color={colors.textMuted} />
         </TouchableOpacity>
       </View>
 
-      <Text className="text-[11px] font-bold text-slate-500 tracking-wider mb-1.5">
+      <Text className="text-[11px] font-bold text-slate-500 dark:text-slate-400 tracking-wider mb-1.5">
         PANGALAN NG BUDGET
       </Text>
       <TextInput
@@ -110,37 +116,39 @@ export default function InlineBudgetForm({
           }
         }}
         placeholder="Hal. Monthly Grocery"
-        placeholderTextColor="#94A3B8"
+        placeholderTextColor={colors.textMuted}
         autoFocus={!isEditing}
         autoCapitalize="words"
         autoCorrect={false}
         maxLength={40}
         returnKeyType="next"
-        className="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-base font-semibold text-slate-800"
+        className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-2xl px-4 py-3 text-base font-semibold text-slate-800 dark:text-slate-100"
       />
 
-      <Text className="text-[11px] font-bold text-slate-500 tracking-wider mb-1.5 mt-3">
+      <Text className="text-[11px] font-bold text-slate-500 dark:text-slate-400 tracking-wider mb-1.5 mt-3">
         TOTAL NA HALAGA
       </Text>
-      <View className="flex-row items-center bg-slate-50 border border-slate-200 rounded-2xl px-4">
-        <Text className="text-lg font-extrabold text-blue-600 mr-1">₱</Text>
+      <View className="flex-row items-center bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-2xl px-4">
+        <Text className="text-lg font-extrabold text-primary-accent mr-1">
+          ₱
+        </Text>
         <TextInput
           value={amountText}
           onChangeText={handleAmountChange}
           placeholder="0.00"
-          placeholderTextColor="#94A3B8"
+          placeholderTextColor={colors.textMuted}
           keyboardType="decimal-pad"
           maxLength={12}
           returnKeyType="done"
           onSubmitEditing={handleSubmit}
-          className="flex-1 py-3 text-base font-semibold text-slate-800"
+          className="flex-1 py-3 text-base font-semibold text-slate-800 dark:text-slate-100"
         />
       </View>
 
       {error ? (
         <View className="flex-row items-center mt-2.5">
           <Ionicons name="alert-circle" size={13} color="#DC2626" />
-          <Text className="text-[11px] text-red-600 font-semibold ml-1.5">
+          <Text className="text-[11px] text-red-600 dark:text-red-400 font-semibold ml-1.5">
             {error}
           </Text>
         </View>
@@ -151,9 +159,9 @@ export default function InlineBudgetForm({
           onPress={onCancel}
           disabled={isSaving}
           activeOpacity={0.85}
-          className="flex-1 bg-slate-100 rounded-2xl py-3 items-center justify-center mr-2"
+          className="flex-1 bg-slate-100 dark:bg-slate-800 rounded-2xl py-3 items-center justify-center mr-2"
         >
-          <Text className="text-slate-600 text-sm font-extrabold">
+          <Text className="text-slate-600 dark:text-slate-300 text-sm font-extrabold">
             Kanselahin
           </Text>
         </TouchableOpacity>
@@ -162,15 +170,19 @@ export default function InlineBudgetForm({
           disabled={isSaving}
           activeOpacity={0.85}
           className={`flex-1 rounded-2xl py-3 flex-row items-center justify-center ${
-            isSaving ? "bg-blue-400" : "bg-blue-600"
+            isSaving ? "bg-primary/70" : "bg-primary"
           }`}
         >
           {isSaving ? (
-            <ActivityIndicator color="#FFFFFF" />
+            <ActivityIndicator color={colors.onFill} />
           ) : (
             <>
-              <Ionicons name="checkmark-circle" size={16} color="#FFFFFF" />
-              <Text className="text-white text-sm font-extrabold ml-1.5">
+              <Ionicons
+                name="checkmark-circle"
+                size={16}
+                color={colors.onFill}
+              />
+              <Text className="text-on-primary text-sm font-extrabold ml-1.5">
                 {isEditing ? "I-save" : "I-save ang Budget"}
               </Text>
             </>

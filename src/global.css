@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --color-primary: 37 99 235;
+  --color-primary-soft: 239 246 255;
+  --color-primary-line: 219 234 254;
+  --color-primary-accent: 37 99 235;
+  --color-on-primary: 255 255 255;
+  --color-background: 248 250 252;
+  --color-surface: 255 255 255;
+  --color-subtle: 226 232 240;
+  --color-line: 226 232 240;
+  --color-strong: 203 213 225;
+  --color-foreground: 15 23 42;
+  --color-muted: 100 116 139;
+  --color-faint: 148 163 184;
+}

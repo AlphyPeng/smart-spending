@@ -6,7 +6,7 @@ import GreetingBanner from "../../components/budget/GreetingBanner";
 
 export default function BudgetScreen() {
   return (
-    <SafeAreaView className="flex-1 bg-slate-50" edges={["top"]}>
+    <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-950" edges={["top"]}>
       {/* Top Header Section */}
       <BudgetHeader />
 

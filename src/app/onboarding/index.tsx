@@ -3,6 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "../../context/ThemeContext";
 
 const FEATURES = [
   {
@@ -23,14 +24,16 @@ const FEATURES = [
 ];
 
 export default function WelcomeScreen() {
+  const { colors } = useTheme();
+
   return (
-    <SafeAreaView className="flex-1 bg-slate-50">
+    <SafeAreaView className="flex-1 bg-slate-50 dark:bg-slate-950">
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
         <LinearGradient
-          colors={["#2563EB", "#1D4ED8", "#1E40AF"]}
+          colors={colors.gradient}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{
@@ -44,14 +47,14 @@ export default function WelcomeScreen() {
         >
           <View className="w-20 h-20 bg-white/15 rounded-3xl items-center justify-center border border-white/20 mb-6">
             <View className="w-14 h-14 bg-white rounded-2xl items-center justify-center shadow-lg">
-              <Ionicons name="wallet" size={30} color="#2563EB" />
+              <Ionicons name="wallet" size={30} color={colors.gradient[0]} />
             </View>
           </View>
 
           <Text className="text-3xl font-extrabold text-white text-center mb-1">
             Sisidlan
           </Text>
-          <Text className="text-sm font-semibold text-blue-100 text-center mb-5">
+          <Text className="text-sm font-semibold text-white/80 text-center mb-5">
             Smart Spending • Budget Tracker
           </Text>
 
@@ -63,11 +66,11 @@ export default function WelcomeScreen() {
         </LinearGradient>
 
         <View className="flex-1 px-6 -mt-8">
-          <View className="bg-white rounded-3xl p-6 shadow-lg border border-slate-100">
-            <Text className="text-xl font-extrabold text-slate-900 text-center mb-1.5">
+          <View className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-lg border border-slate-100 dark:border-slate-800">
+            <Text className="text-xl font-extrabold text-slate-900 dark:text-slate-50 text-center mb-1.5">
               Kumusta! Ako si Allocwenta.
             </Text>
-            <Text className="text-sm text-slate-500 text-center leading-relaxed">
+            <Text className="text-sm text-slate-500 dark:text-slate-400 text-center leading-relaxed">
               Ang smart na katuwang mo sa pagsubaybay ng budget para sa grocery
               at pang-araw-araw na gastusin.
             </Text>
@@ -77,17 +80,21 @@ export default function WelcomeScreen() {
                 <View
                   key={feature.title}
                   className={`flex-row items-center py-3 ${
-                    index > 0 ? "border-t border-slate-100" : ""
+                    index > 0 ? "border-t border-slate-100 dark:border-slate-800" : ""
                   }`}
                 >
-                  <View className="w-11 h-11 bg-blue-50 border border-blue-100 rounded-2xl items-center justify-center mr-3">
-                    <Ionicons name={feature.icon} size={20} color="#2563EB" />
+                  <View className="w-11 h-11 bg-primary-soft border border-primary-line rounded-2xl items-center justify-center mr-3">
+                    <Ionicons
+                      name={feature.icon}
+                      size={20}
+                      color={colors.accent}
+                    />
                   </View>
                   <View className="flex-1">
-                    <Text className="text-sm font-bold text-slate-800">
+                    <Text className="text-sm font-bold text-slate-800 dark:text-slate-100">
                       {feature.title}
                     </Text>
-                    <Text className="text-xs text-slate-500 font-medium mt-0.5">
+                    <Text className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">
                       {feature.description}
                     </Text>
                   </View>
@@ -100,15 +107,15 @@ export default function WelcomeScreen() {
             <TouchableOpacity
               onPress={() => router.push("/onboarding/name")}
               activeOpacity={0.85}
-              className="bg-blue-600 rounded-2xl py-4 flex-row items-center justify-center shadow-md"
+              className="bg-primary rounded-2xl py-4 flex-row items-center justify-center shadow-md"
             >
-              <Text className="text-white text-base font-extrabold mr-2">
+              <Text className="text-on-primary text-base font-extrabold mr-2">
                 Simulan
               </Text>
-              <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
+              <Ionicons name="arrow-forward" size={18} color={colors.onFill} />
             </TouchableOpacity>
 
-            <Text className="text-[11px] text-slate-400 text-center font-medium mt-3">
+            <Text className="text-[11px] text-slate-400 dark:text-slate-500 text-center font-medium mt-3">
               Ise-set up lang natin ang pangalan mo. Mabilis lang ito!
             </Text>
           </View>
