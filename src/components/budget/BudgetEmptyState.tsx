@@ -28,11 +28,7 @@ export default function BudgetEmptyState({ onCreate }: BudgetEmptyStateProps) {
         activeOpacity={0.85}
         className="mt-6 bg-primary rounded-2xl py-3.5 px-6 flex-row items-center shadow-md"
       >
-        <Ionicons
-          name="add-circle-outline"
-          size={18}
-          color={colors.onFill}
-        />
+        <Ionicons name="add-circle-outline" size={18} color={colors.onFill} />
         <Text className="text-on-primary text-sm font-extrabold ml-2">
           Gumawa ng Budget
         </Text>

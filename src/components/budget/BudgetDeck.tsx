@@ -1,5 +1,18 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ActivityIndicator, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   interpolate,
@@ -20,10 +33,7 @@ type DeckItem =
   | { key: string; type: "budget"; budget: Budget }
   | { key: string; type: "add" };
 
-type FormState =
-  | { mode: "create" }
-  | { mode: "edit"; budget: Budget }
-  | null;
+type FormState = { mode: "create" } | { mode: "edit"; budget: Budget } | null;
 
 const MAX_VISIBLE_RANKS = 3;
 
@@ -95,13 +105,22 @@ function DeckCard({
       dragX.value = 0;
       dragDir.value = 0;
     }
-  }, [rank, animateEntrance, committing, dragX, dragDir, translateY, scale, opacity]);
+  }, [
+    rank,
+    animateEntrance,
+    committing,
+    dragX,
+    dragDir,
+    translateY,
+    scale,
+    opacity,
+  ]);
 
   const handleSwiped = useCallback(
     (direction: 1 | -1) => {
       onSwiped(direction);
     },
-    [onSwiped]
+    [onSwiped],
   );
 
   const pan = Gesture.Pan()
@@ -143,12 +162,16 @@ function DeckCard({
 
       if (blocked || !passedThreshold) {
         if (dragX.value !== 0) {
-          dragX.value = withTiming(0, { duration: RETREAT_DURATION }, (finished) => {
-            if (finished) {
-              dragDir.value = 0;
-              runOnJS(onDragPhase)(null);
-            }
-          });
+          dragX.value = withTiming(
+            0,
+            { duration: RETREAT_DURATION },
+            (finished) => {
+              if (finished) {
+                dragDir.value = 0;
+                runOnJS(onDragPhase)(null);
+              }
+            },
+          );
         }
         return;
       }
@@ -164,14 +187,18 @@ function DeckCard({
             runOnJS(handleSwiped)(direction);
           } else {
             committing.value = false;
-            dragX.value = withTiming(0, { duration: RETREAT_DURATION }, (retreatFinished) => {
-              if (retreatFinished) {
-                dragDir.value = 0;
-                runOnJS(onDragPhase)(null);
-              }
-            });
+            dragX.value = withTiming(
+              0,
+              { duration: RETREAT_DURATION },
+              (retreatFinished) => {
+                if (retreatFinished) {
+                  dragDir.value = 0;
+                  runOnJS(onDragPhase)(null);
+                }
+              },
+            );
           }
-        }
+        },
       );
     })
     .onFinalize((_event, success) => {
@@ -179,12 +206,16 @@ function DeckCard({
         return;
       }
 
-      dragX.value = withTiming(0, { duration: RETREAT_DURATION }, (finished) => {
-        if (finished) {
-          dragDir.value = 0;
-          runOnJS(onDragPhase)(null);
-        }
-      });
+      dragX.value = withTiming(
+        0,
+        { duration: RETREAT_DURATION },
+        (finished) => {
+          if (finished) {
+            dragDir.value = 0;
+            runOnJS(onDragPhase)(null);
+          }
+        },
+      );
     });
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -208,7 +239,7 @@ function DeckCard({
           rotate: `${interpolate(
             cardTranslateX,
             [-width, 0, width],
-            [-6, 0, 6]
+            [-6, 0, 6],
           )}deg`,
         },
       ],
@@ -254,16 +285,14 @@ export default function BudgetDeck() {
 
   const items = useMemo<DeckItem[]>(
     () => [
-      ...budgets.map(
-        (budget): DeckItem => ({
-          key: `budget-${budget.id}`,
-          type: "budget",
-          budget,
-        })
-      ),
+      ...budgets.map((budget): DeckItem => ({
+        key: `budget-${budget.id}`,
+        type: "budget",
+        budget,
+      })),
       { key: "add-budget", type: "add" },
     ],
-    [budgets]
+    [budgets],
   );
   const itemCount = items.length;
 
@@ -321,7 +350,7 @@ export default function BudgetDeck() {
     const currentItems = itemsRef.current;
     const nextIndex = Math.max(
       0,
-      Math.min(currentItems.length - 1, index - direction)
+      Math.min(currentItems.length - 1, index - direction),
     );
     activeIndexRef.current = nextIndex;
     setActiveIndex(nextIndex);
@@ -354,9 +383,7 @@ export default function BudgetDeck() {
 
   const visibleRanks = Math.min(MAX_VISIBLE_RANKS, itemCount - activeIndex);
   const rankedCards = [
-    ...(activeIndex > 0
-      ? [{ rank: -1, item: items[activeIndex - 1] }]
-      : []),
+    ...(activeIndex > 0 ? [{ rank: -1, item: items[activeIndex - 1] }] : []),
     ...Array.from({ length: visibleRanks }, (_, rank) => ({
       rank,
       item: items[activeIndex + rank],
@@ -383,9 +410,7 @@ export default function BudgetDeck() {
           />
         );
       }
-      return (
-        <AddBudgetCard onPress={() => setFormState({ mode: "create" })} />
-      );
+      return <AddBudgetCard onPress={() => setFormState({ mode: "create" })} />;
     }
 
     if (
@@ -441,8 +466,7 @@ export default function BudgetDeck() {
               }
               isAbsolute={rank !== 0}
               animateEntrance={
-                item.type === "budget" &&
-                item.budget.id === entranceBudgetId
+                item.type === "budget" && item.budget.id === entranceBudgetId
               }
             >
               {renderCardContent(item, rank)}

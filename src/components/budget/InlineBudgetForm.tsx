@@ -29,7 +29,7 @@ export default function InlineBudgetForm({
 
   const [name, setName] = useState(initialBudget?.name ?? "");
   const [amountText, setAmountText] = useState(
-    initialBudget ? String(initialBudget.amount) : ""
+    initialBudget ? String(initialBudget.amount) : "",
   );
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);

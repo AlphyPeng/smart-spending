@@ -29,11 +29,7 @@ export default function AddBudgetCard({ onPress }: AddBudgetCardProps) {
         Gumawa ng panibagong budget na susubaybayan mo.
       </Text>
       <View className="mt-3 bg-primary px-4 py-2 rounded-full flex-row items-center">
-        <Ionicons
-          name="add-circle-outline"
-          size={14}
-          color={colors.onFill}
-        />
+        <Ionicons name="add-circle-outline" size={14} color={colors.onFill} />
         <Text className="text-on-primary text-[11px] font-extrabold ml-1.5">
           Gumawa Ngayon
         </Text>

@@ -1,8 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Text, TouchableOpacity, View } from "react-native";
-import { useTheme } from "../../context/ThemeContext";
 import type { Budget } from "../../context/BudgetContext";
+import { useTheme } from "../../context/ThemeContext";
 import { formatNumber, formatPeso } from "../../lib/currency";
 
 interface BudgetOverviewCardProps {
@@ -94,7 +94,8 @@ export default function BudgetOverviewCard({
             className="text-xs font-bold whitespace-nowrap text-primary-accent"
             numberOfLines={1}
           >
-            {availablePct}% Available • {availablePct >= 50 ? "On Track" : "Bantayan"}
+            {availablePct}% Available •{" "}
+            {availablePct >= 50 ? "On Track" : "Bantayan"}
           </Text>
         </View>
 
