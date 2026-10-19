@@ -8,6 +8,8 @@ import {
   type ReactNode,
 } from "react";
 
+import { runExclusive } from "../db/client";
+
 export interface UserProfile {
   id: number;
   name: string;
@@ -42,8 +44,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
     async function loadUser() {
       try {
-        const row = await db.getFirstAsync<UserProfileRow>(
-          "SELECT id, name, created_at, updated_at FROM user_profile WHERE id = 1"
+        const row = await runExclusive(db, () =>
+          db.getFirstAsync<UserProfileRow>(
+            "SELECT id, name, created_at, updated_at FROM user_profile WHERE id = 1"
+          )
         );
         if (!isMounted) {
           return;
@@ -58,6 +62,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
               }
             : null
         );
+      } catch (error) {
+        console.error("Failed to load user profile:", error);
       } finally {
         if (isMounted) {
           setIsLoading(false);
@@ -75,13 +81,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const completeOnboarding = useCallback(
     async (name: string) => {
       const trimmedName = name.trim();
-      await db.runAsync(
-        "INSERT OR REPLACE INTO user_profile (id, name, created_at, updated_at) VALUES (1, ?, datetime('now'), datetime('now'))",
-        trimmedName
-      );
-      const row = await db.getFirstAsync<UserProfileRow>(
-        "SELECT id, name, created_at, updated_at FROM user_profile WHERE id = 1"
-      );
+      const row = await runExclusive(db, async () => {
+        await db.runAsync(
+          "INSERT OR REPLACE INTO user_profile (id, name, created_at, updated_at) VALUES (1, ?, datetime('now'), datetime('now'))",
+          trimmedName
+        );
+        return db.getFirstAsync<UserProfileRow>(
+          "SELECT id, name, created_at, updated_at FROM user_profile WHERE id = 1"
+        );
+      });
       if (row) {
         setUser({
           id: row.id,
@@ -97,9 +105,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const updateName = useCallback(
     async (name: string) => {
       const trimmedName = name.trim();
-      await db.runAsync(
-        "UPDATE user_profile SET name = ?, updated_at = datetime('now') WHERE id = 1",
-        trimmedName
+      await runExclusive(db, () =>
+        db.runAsync(
+          "UPDATE user_profile SET name = ?, updated_at = datetime('now') WHERE id = 1",
+          trimmedName
+        )
       );
       setUser((previous) =>
         previous

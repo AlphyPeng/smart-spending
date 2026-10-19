@@ -3,17 +3,19 @@ import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { Pressable, StyleSheet, View, type PressableProps } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function TabsLayout() {
   const insets = useSafeAreaInsets();
+  const { colors } = useTheme();
 
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
 
-        tabBarActiveTintColor: "#1E40AF",
-        tabBarInactiveTintColor: "#64748B",
+        tabBarActiveTintColor: colors.accent,
+        tabBarInactiveTintColor: colors.textMuted,
 
         // Remove Android dark ripple effect
         tabBarButton: (props) => (
@@ -27,9 +29,9 @@ export default function TabsLayout() {
           height: 60 + (insets.bottom > 0 ? insets.bottom : 10),
           paddingBottom: insets.bottom > 0 ? insets.bottom : 8,
           paddingTop: 6,
-          backgroundColor: "#FFFFFF",
+          backgroundColor: colors.surface,
           borderTopWidth: 1,
-          borderTopColor: "#E2E8F0",
+          borderTopColor: colors.border,
           elevation: 0,
         },
 
@@ -53,7 +55,7 @@ export default function TabsLayout() {
             <View
               style={[
                 styles.iconContainer,
-                focused && styles.activeIconContainer,
+                focused && { backgroundColor: colors.soft },
               ]}
             >
               <Ionicons
@@ -75,7 +77,7 @@ export default function TabsLayout() {
             <View
               style={[
                 styles.iconContainer,
-                focused && styles.activeIconContainer,
+                focused && { backgroundColor: colors.soft },
               ]}
             >
               <Ionicons
@@ -97,7 +99,7 @@ export default function TabsLayout() {
             <View
               style={[
                 styles.iconContainer,
-                focused && styles.activeIconContainer,
+                focused && { backgroundColor: colors.soft },
               ]}
             >
               <Ionicons
@@ -120,9 +122,5 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
-  },
-
-  activeIconContainer: {
-    backgroundColor: "#EFF6FF",
   },
 });
