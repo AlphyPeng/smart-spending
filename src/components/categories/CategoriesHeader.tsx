@@ -15,7 +15,7 @@ export default function CategoriesHeader() {
         </View>
 
         <View className="flex-1">
-          <Text className="text-xl font-bold text-[#020617]">Categories Lists</Text>
+          <Text className="text-xl font-bold text-[#000000]">Categories Lists</Text>
           <Text className="text-base font-normal text-[#64748b]">₱4,850.00 Limit</Text>
         </View>
 
