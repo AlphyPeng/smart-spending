@@ -10,7 +10,8 @@
     "ios": {
       "icon": "./assets/expo.icon"
     },
-    "android": {
+   "android": {
+      "edgeToEdgeEnabled": true,
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -40,7 +41,13 @@
       "expo-web-browser",
       "expo-sqlite",
       "expo-sharing",
-      "expo-system-ui"
+      "expo-system-ui",
+      [
+        "expo-navigation-bar",
+        {
+          "enforceContrast": false
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

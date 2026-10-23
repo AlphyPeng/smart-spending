@@ -1,6 +1,6 @@
-// import { StatusBar } from "expo-status-bar";
-import { StatusBar } from "react-native";
+import { NavigationBar } from "expo-navigation-bar";
 import { useSQLiteContext } from "expo-sqlite";
+import * as SystemUI from "expo-system-ui";
 import { colorScheme, vars } from "nativewind";
 import {
   createContext,
@@ -15,6 +15,8 @@ import {
 import {
   AppState,
   Appearance,
+  Platform,
+  StatusBar,
   StyleSheet,
   useColorScheme,
   View,
@@ -118,6 +120,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     [primaryKey, isDark],
   );
 
+  useEffect(() => {
+    SystemUI.setBackgroundColorAsync(colors.background).catch((error) => {
+      console.warn("Failed to set the root background color:", error);
+    });
+  }, [colors.background]);
+
   const setMode = useCallback(
     (next: ThemeMode) => {
       setModeState(next);
@@ -169,6 +177,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         backgroundColor={colors.background}
         translucent={false}
       />
+      {Platform.OS === "android" ? <NavigationBar style="auto" /> : null}
       <View style={rootStyle}>{children}</View>
     </ThemeContext.Provider>
   );
