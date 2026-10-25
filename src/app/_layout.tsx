@@ -31,6 +31,10 @@ function RootNavigator() {
         <Stack.Screen name="onboarding" />
       </Stack.Protected>
 
+      <Stack.Protected guard={!isOnboarded}>
+        <Stack.Screen name="categories" />
+      </Stack.Protected>
+
       <Stack.Protected guard={isOnboarded}>
         <Stack.Screen name="(tabs)" />
       </Stack.Protected>
